@@ -64,8 +64,8 @@ dynamique <- function(N=20, mu=0.2, theta=0.1, xi=0.15, T=10800) {
     s <- sortie_abris(A1, A2, theta, xi)
     A1 <- A1 + e[1] - s[1]
     A2 <- A2 + e[2] - s[2]
-    abri1_histoire[t] <- A1
-    abri2_histoire[t] <- A2
+    abri1_histoire[t] <- A1 
+    abri2_histoire[t] <- A2 
   }
   return(list(a1=abri1_histoire, a2=abri2_histoire))
 }
@@ -144,6 +144,35 @@ legend(x=par("usr")[2]*1.05, y=par("usr")[4]*0.9,
 
 cat(sprintf("Moyenne Abri 1: %.2f ± SD: %.2f\n", mean(aa1), sd(aa1)))
 cat(sprintf("Moyenne Abri 2: %.2f ± SD: %.2f\n", mean(aa2), sd(aa2)))
+
+
+
+
+
+  
+
+
+n_sim <- 400
+aa1 <- numeric(n_sim) 
+aa2 <- numeric(n_sim)
+Abri_gagnant <- numeric(n_sim) ##
+
+for (i in 1:n_sim) {
+  res <- dynamique()
+  aa1[i] <- res$a1[length(res$a1)]
+  aa2[i] <- res$a2[length(res$a2)]
+  Abri_gagnant[i] <- max(aa1[i], aa2[i])
+}
+
+max_val <- max(c(table(aa1), table(aa2)))
+
+#png("figure_R_02_histogramme_400.png", width=800, height=500, res=120)
+par(mar=c(5,4,4,8), xpd=TRUE)
+hist(Abri_gagnant, breaks=seq(-0.5, 20.5, 1),
+     col=rgb(0, 0, 1, 0.5),
+     xlab="Nombre d'individus", ylab="Fréquence",
+     main="", ylim=c(0, max_val))
+
 
 # ----------------------------------------------------------------------------
 # FIGURE 3: Choix aléatoire - 10000 simulations
