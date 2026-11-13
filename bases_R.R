@@ -1,3 +1,5 @@
+
+
 #!/usr/bin/env Rscript
 # Script R avec tous les exemples du document
 
@@ -152,3 +154,4 @@ cat("Sauvegardé: r_histogramme.png\n")
 cat("\n", strrep("=", 60), "\n")
 cat("SCRIPT R TERMINÉ\n")
 cat(strrep("=", 60), "\n")
+
