@@ -122,3 +122,4 @@ wilcox.test(simulations$shelter1, simulations$shelter2, paired=TRUE)
 cat("\n", strrep("=", 60), "\n")
 cat("SCRIPT R TERMINÉ\n")
 cat(strrep("=", 60), "\n")
+

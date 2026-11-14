@@ -188,7 +188,7 @@ barplot(binom_probs * 10000, names.arg=outcomes,
 # ----------------------------------------------------------------------------
 
 x_vals <- 0:20
-y_vals <- dbinom(x_vals, 20, 0.5) * 10000
+y_vals <- dbinom(x_vals, 20, 0.5) *10000
 max_val <- max(c(table(aa3), y_vals))
 
 #png("figure_R_05_comparison.png", width=800, height=500, res=120)

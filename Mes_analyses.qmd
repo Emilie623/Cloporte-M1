@@ -153,7 +153,9 @@ hist(Abri_gagnant, breaks=seq(-0.5, 20.5, 1),
 ```
 
 
-# Q2 Binomiale sur 400 simulations 
+# Q2 Binomiale sur 400 simulations
+
+## Distribution binomiale théorique 
 
 ```{r}
 N <- 20
@@ -170,10 +172,46 @@ barplot(binom_probs * 400, names.arg=outcomes,
 
 ```
 
-
-
 ## Test binomiale 
 
+```{r}
+simulations <- read.table("simulations_100.txt", header=TRUE)
+head(simulations)
+une_simulation <- simulations[1, ]
+```
+Chaque simulation (simulation_number), le nombre d'individus sous l'abri 1 (shelter1), dans l'arène (arena) et sous l'abri 2 (shelter2) à la fin.
+
+
+```{r}
 abri1 <- une_simulation$shelter1
 abrites <- une_simulation$shelter1 + une_simulation$shelter2
 print(binom.test(abri1, abrites, p=0.5))
+```
+La p-value est inférieur au seuil alpha de 0.05, on peux rejeter l'hypothèse null, le choix diffère du hasard. La proba de succès étant assez élevée (95%) on peut avoir confiance en ses résultats 
+
+
+## Comparaison du choix aléatoire et de la théorie binomiale 
+
+```{r}
+cat("Test de chi-carré (choix aléatoire vs théorie binomiale):\n")
+aa3 <- numeric(10000)
+for (i in 1:10000) {
+  res <- random_choice(20, 0.5)
+  aa3[i] <- res[1]
+}
+
+obs_freq <- table(factor(aa3, levels=0:20))
+exp_prob <- dbinom(0:20, 20, 0.5)
+test <- chisq.test(obs_freq, p=exp_prob)
+cat(sprintf("  Statistique chi-carré: %.2f\n", test$statistic))
+cat(sprintf("  p-value: %.4f\n", test$p.value))
+if (test$p.value > 0.05) {
+  cat("  Conclusion: Le choix aléatoire suit bien la distribution binomiale!\n")
+} else {
+  cat("  Conclusion: Différence significative détectée.\n")
+}
+```
+
+
+
+
