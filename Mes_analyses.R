@@ -1,0 +1,143 @@
+# ============================================================================
+# FONCTIONS PRINCIPALES
+# ============================================================================
+
+# Fonction: Entrée dans les abris
+entree_abris <- function(N, A1, A2, mu) {
+  entrees1 <- 0
+  entrees2 <- 0
+  dehors <- N - A1 - A2
+  if (dehors > 0) {
+    for (i in 1:dehors) {
+      # Chaque individu tire séparément pour chaque abri
+      choix1 <- runif(1) <= mu  # tirage pour l'abri 1
+      choix2 <- runif(1) <= mu  # tirage pour l'abri 2
+      
+      if (choix1 && choix2) {
+        # Si les deux tirages réussissent, on choisit au hasard
+        if (runif(1) < 0.5) {
+          entrees1 <- entrees1 + 1
+        } else {
+          entrees2 <- entrees2 + 1
+        }
+      } else if (choix1) {
+        entrees1 <- entrees1 + 1
+      } else if (choix2) {
+        entrees2 <- entrees2 + 1
+      }
+      # sinon l'individu reste dehors
+    }
+  }
+  return(c(entrees1, entrees2))
+}
+
+# Fonction: Sortie des abris
+sortie_abris <- function(A1, A2, theta, xi) {
+  sorties1 <- 0
+  sorties2 <- 0
+  if (A1 > 0) {
+    for (i in 1:A1) {
+      if (runif(1) <= theta * exp(-xi * A1)) {
+        sorties1 <- sorties1 + 1
+      }
+    }
+  }
+  if (A2 > 0) {
+    for (i in 1:A2) {
+      if (runif(1) <= theta * exp(-xi * A2)) {
+        sorties2 <- sorties2 + 1
+      }
+    }
+  }
+  return(c(sorties1, sorties2))
+}
+
+# Fonction: Dynamique temporelle
+dynamique <- function(N=20, mu=0.2, theta=0.1, xi=0.15, T=10800) {
+  A1 <- 0
+  A2 <- 0
+  abri1_histoire <- numeric(T)
+  abri2_histoire <- numeric(T)
+  for (t in 1:T) {
+    e <- entree_abris(N, A1, A2, mu)
+    s <- sortie_abris(A1, A2, theta, xi)
+    A1 <- A1 + e[1] - s[1]
+    A2 <- A2 + e[2] - s[2]
+    abri1_histoire[t] <- A1 
+    abri2_histoire[t] <- A2 
+  }
+  return(list(a1=abri1_histoire, a2=abri2_histoire))
+}
+
+# Fonction: Choix aléatoire
+random_choice <- function(N=20, p=0.5) {
+  Abri1 <- 0
+  Abri2 <- 0
+  for (i in 1:N) {
+    if (runif(1) <= p) {
+      Abri1 <- Abri1 + 1
+    } else {
+      Abri2 <- Abri2 + 1
+    }
+  }
+  return(c(Abri1, Abri2))
+}
+
+
+
+#===========================================================================
+# Q1a Montrez les distributions du nombre d'individus sous l'abri 1 
+# ==========================================================================
+
+n_sim <- 400
+aa1 <- numeric(n_sim) 
+aa2 <- numeric(n_sim)
+
+for (i in 1:n_sim) {
+  res <- dynamique()
+  aa1[i] <- res$a1[length(res$a1)]
+  aa2[i] <- res$a2[length(res$a2)]
+}
+
+max_val <- max(c(table(aa1), table(aa2)))
+
+#png("figure_R_02_histogramme_400.png", width=800, height=500, res=120)
+par(mar=c(5,4,4,8), xpd=TRUE)
+hist(aa1, breaks=seq(-0.5, 20.5, 1),
+     col=rgb(0, 0, 1, 0.5),
+     xlab="Nombre d'individus", ylab="Fréquence",
+     main="", ylim=c(0, max_val))
+
+
+# ==========================================================================
+# Q1b Montrez les distributions du nombre d'individus sous l'abri gagnant
+# ==========================================================================
+
+n_sim <- 400
+aa1 <- numeric(n_sim) 
+aa2 <- numeric(n_sim)
+Abri_gagnant <- numeric(n_sim) ##
+
+for (i in 1:n_sim) {
+  res <- dynamique()
+  aa1[i] <- res$a1[length(res$a1)]
+  aa2[i] <- res$a2[length(res$a2)]
+  Abri_gagnant[i] <- max(aa1[i], aa2[i])
+}
+
+max_val <- max(c(table(aa1), table(aa2)))
+
+#png("figure_R_02_histogramme_400.png", width=800, height=500, res=120)
+par(mar=c(5,4,4,8), xpd=TRUE)
+hist(Abri_gagnant, breaks=seq(-0.5, 20.5, 1),
+     col=rgb(0, 0, 1, 0.5),
+     xlab="Nombre d'individus", ylab="Fréquence",
+     main="", ylim=c(0, max_val))
+
+
+
+
+
+
+
+
