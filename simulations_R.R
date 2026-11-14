@@ -134,6 +134,7 @@ hist(aa1, breaks=seq(-0.5, 20.5, 1),
      col=rgb(0, 0, 1, 0.5),
      xlab="Nombre d'individus", ylab="Fréquence",
      main="", ylim=c(0, max_val))
+
 hist(aa2, breaks=seq(-0.5, 20.5, 1),
      col=rgb(1, 0, 0, 0.5),
      add=TRUE)
@@ -147,10 +148,9 @@ cat(sprintf("Moyenne Abri 2: %.2f ± SD: %.2f\n", mean(aa2), sd(aa2)))
 
 
 
-
+# Zarma 1B
 
   
-
 
 n_sim <- 400
 aa1 <- numeric(n_sim) 
