@@ -1,8 +1,14 @@
-# ============================================================================
-# FONCTIONS PRINCIPALES
-# ============================================================================
+---
+title: "Mes_analyses"
+format: html
+---
 
-# Fonction: Entrée dans les abris
+# FONCTIONS PRINCIPALES
+
+
+## Fonction: Entrée dans les abris
+
+```{r}
 entree_abris <- function(N, A1, A2, mu) {
   entrees1 <- 0
   entrees2 <- 0
@@ -30,8 +36,12 @@ entree_abris <- function(N, A1, A2, mu) {
   }
   return(c(entrees1, entrees2))
 }
+```
 
-# Fonction: Sortie des abris
+
+## Fonction: Sortie des abris
+
+```{r}
 sortie_abris <- function(A1, A2, theta, xi) {
   sorties1 <- 0
   sorties2 <- 0
@@ -51,8 +61,12 @@ sortie_abris <- function(A1, A2, theta, xi) {
   }
   return(c(sorties1, sorties2))
 }
+```
 
-# Fonction: Dynamique temporelle
+
+## Fonction: Dynamique temporelle
+
+```{r}
 dynamique <- function(N=20, mu=0.2, theta=0.1, xi=0.15, T=10800) {
   A1 <- 0
   A2 <- 0
@@ -68,8 +82,11 @@ dynamique <- function(N=20, mu=0.2, theta=0.1, xi=0.15, T=10800) {
   }
   return(list(a1=abri1_histoire, a2=abri2_histoire))
 }
+```
 
-# Fonction: Choix aléatoire
+
+## Fonction: Choix aléatoire
+```{r}
 random_choice <- function(N=20, p=0.5) {
   Abri1 <- 0
   Abri2 <- 0
@@ -82,13 +99,12 @@ random_choice <- function(N=20, p=0.5) {
   }
   return(c(Abri1, Abri2))
 }
+```
 
 
-
-#===========================================================================
 # Q1a Montrez les distributions du nombre d'individus sous l'abri 1 
-# ==========================================================================
 
+```{r}
 n_sim <- 400
 aa1 <- numeric(n_sim) 
 aa2 <- numeric(n_sim)
@@ -107,12 +123,12 @@ hist(aa1, breaks=seq(-0.5, 20.5, 1),
      col=rgb(0, 0, 1, 0.5),
      xlab="Nombre d'individus", ylab="Fréquence",
      main="", ylim=c(0, max_val))
+```
 
 
-# ==========================================================================
 # Q1b Montrez les distributions du nombre d'individus sous l'abri gagnant
-# ==========================================================================
 
+```{r}
 n_sim <- 400
 aa1 <- numeric(n_sim) 
 aa2 <- numeric(n_sim)
@@ -134,11 +150,12 @@ hist(Abri_gagnant, breaks=seq(-0.5, 20.5, 1),
      xlab="Nombre d'individus", ylab="Fréquence",
      main="", ylim=c(0, max_val))
 
+```
 
-# ===========================================================================
+
 # Q2 Binomiale sur 400 simulations 
-# ===========================================================================
 
+```{r}
 N <- 20
 p <- 0.5
 outcomes <- 0:N
@@ -146,29 +163,17 @@ binom_probs <- dbinom(outcomes, N, p)
 
 #png("figure_R_04_binomiale.png", width=800, height=500, res=120)
 par(mar=c(5,4,4,8), xpd=TRUE)
-barplot(binom_probs * 10000, names.arg=outcomes,
-        col="steelblue", border="white",
-        xlab="Nombre d'individus", ylab="Fréquence (sur 10000)")
-#dev.off()
+barplot(binom_probs * 400, names.arg=outcomes,
+        col="orange", border="black",
+        xlab="Nombre d'individus", ylab="Fréquence (sur 400)")
+#dev.off() Permet de fermer le graphique, quoi que cela veuille dire
 
+```
+
+
+
+## Test binomiale 
 
 abri1 <- une_simulation$shelter1
 abrites <- une_simulation$shelter1 + une_simulation$shelter2
 print(binom.test(abri1, abrites, p=0.5))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
