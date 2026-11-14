@@ -135,6 +135,37 @@ hist(Abri_gagnant, breaks=seq(-0.5, 20.5, 1),
      main="", ylim=c(0, max_val))
 
 
+# ===========================================================================
+# Q2 Binomiale sur 400 simulations 
+# ===========================================================================
+
+N <- 20
+p <- 0.5
+outcomes <- 0:N
+binom_probs <- dbinom(outcomes, N, p)
+
+#png("figure_R_04_binomiale.png", width=800, height=500, res=120)
+par(mar=c(5,4,4,8), xpd=TRUE)
+barplot(binom_probs * 10000, names.arg=outcomes,
+        col="steelblue", border="white",
+        xlab="Nombre d'individus", ylab="Fréquence (sur 10000)")
+#dev.off()
+
+
+abri1 <- une_simulation$shelter1
+abrites <- une_simulation$shelter1 + une_simulation$shelter2
+print(binom.test(abri1, abrites, p=0.5))
+
+
+
+
+
+
+
+
+
+
+
 
 
 

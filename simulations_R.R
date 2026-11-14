@@ -183,14 +183,6 @@ barplot(binom_probs * 10000, names.arg=outcomes,
         xlab="Nombre d'individus", ylab="Fréquence (sur 10000)")
 #dev.off()
 
-# *******************************************************************
-# Q2 
-# *******************************************************************
-
-abri1 <- une_simulation$shelter1
-abrites <- une_simulation$shelter1 + une_simulation$shelter2
-print(binom.test(abri1, abrites, p=0.5))
-
 # ----------------------------------------------------------------------------
 # FIGURE 5: Comparaison simulation vs théorie
 # ----------------------------------------------------------------------------
